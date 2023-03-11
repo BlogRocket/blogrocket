@@ -1,0 +1,23 @@
+{
+  "name": "blogrocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "client:dev": "npm run --prefix apps/frontend dev",
+    "client:build": "npm run --prefix apps/frontend build",
+    "server:dev": "npm run --prefix apps/backend dev",
+    "server:build": "npm run --prefix apps/backend build",
+    "dev": "run-p client:dev server:dev",
+    "build": "run-s client:build server:build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "workspaces": [
+    "apps/*"
+  ],
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}

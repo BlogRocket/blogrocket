@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "rootDir": "."
+  },
+  "ts-node": {
+    "esm": true,
+    "require": ["tsconfig-paths/register"]
+  }
+}
