@@ -16,4 +16,4 @@ In the development mode, to run both the server and the client concurrently, run
 npm run dev
 ```
 
-The express app is served on port 5111. The client is served on port 5173. Go to http://localhost:5173 to view the app.
+The express app is served on port 5001. The client is served on port 5173. Go to http://localhost:5173 to view the app.
