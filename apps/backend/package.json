@@ -2,8 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "type": "module",
+  "main": "app.ts",
   "scripts": {
     "dev": "nodemon --exec ts-node app.ts",
     "start": "tsc && node dist/app.js",

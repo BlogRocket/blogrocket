@@ -1,14 +1,13 @@
-import express, { Response } from 'express';
+import express from 'express';
 import path from 'path';
 import * as fs from 'fs';
-import { __dirname } from './utils/constants.js';
 
 const PORT = parseInt(process.env.PORT!) || 5001;
 const HOST = process.env.HOST || 'localhost';
 
 const app = express();
 
-app.get('/ping', (_req, res: Response) => {
+app.get('/ping', (_req, res) => {
   res.send('pong');
 });
 
