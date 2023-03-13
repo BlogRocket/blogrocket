@@ -1,16 +1,16 @@
-import { assert } from "chai";
-import request from "supertest";
-import app from "../../app";
-import User from "../../models/User";
+import { assert } from 'chai';
+import request from 'supertest';
+import app from '../../app';
+import User from '../../models/User';
 
 const baseUrl = '/api/v0';
 
 describe('Auth', () => {
-  let user, code, token;
+  let code, token;
   const credentials = {
     email: 'bob@dylan.com',
     password: 'toto1234!'
-  }
+  };
 
   before(async () => {
     await User.deleteMany({});
@@ -49,19 +49,22 @@ describe('Auth', () => {
     });
 
     it('should return 400 if verification code is not provided', async () => {
-      const res = await request(app).post(`${baseUrl}/signup`).send({ email: credentials.email, password: credentials.password });
+      const res = await request(app)
+        .post(`${baseUrl}/signup`)
+        .send({ email: credentials.email, password: credentials.password });
       assert.equal(res.status, 400);
       assert.equal(res.body.status, 'error');
       assert.exists(res.body.message);
     });
 
     it('should signup', async () => {
-      const res = await request(app).post(`${baseUrl}/signup`).send({ ...credentials, code });
+      const res = await request(app)
+        .post(`${baseUrl}/signup`)
+        .send({ ...credentials, code });
       assert.equal(res.status, 201);
       assert.equal(res.body.status, 'success');
       assert.exists(res.body.token);
       assert.exists(res.body.user);
-      user = res.body.user;
       token = res.body.token;
     });
   });
@@ -82,14 +85,18 @@ describe('Auth', () => {
     });
 
     it('should return 404 if user does not exist', async () => {
-      const res = await request(app).post(`${baseUrl}/login`).send({ ...credentials, email: 'wrong@gmail.com' });
+      const res = await request(app)
+        .post(`${baseUrl}/login`)
+        .send({ ...credentials, email: 'wrong@gmail.com' });
       assert.equal(res.status, 404);
       assert.equal(res.body.status, 'error');
       assert.exists(res.body.message);
     });
 
     it('should return 404 if password is wrong', async () => {
-      const res = await request(app).post(`${baseUrl}/login`).send({ ...credentials, password: 'wrong' });
+      const res = await request(app)
+        .post(`${baseUrl}/login`)
+        .send({ ...credentials, password: 'wrong' });
       assert.equal(res.status, 404);
       assert.equal(res.body.status, 'error');
       assert.exists(res.body.message);
@@ -127,4 +134,4 @@ describe('Auth', () => {
       assert.exists(res.body.message);
     });
   });
-})
+});

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response } from 'express';
 
 /**
  * Handle async function
@@ -9,6 +9,6 @@ const handleAsync = (fn: (req: Request, res: Response, next: NextFunction) => Pr
   return (req: Request, res: Response, next: NextFunction) => {
     fn(req, res, next).catch(next);
   };
-}
+};
 
 export default handleAsync;

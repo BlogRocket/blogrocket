@@ -4,4 +4,4 @@ export const getEnv = (env: string) => {
     return process.env[`${env}_TEST`] || process.env[env];
   }
   return process.env[env];
-}
+};

@@ -6,6 +6,7 @@ export default class Db {
     try {
       await mongoose.connect(getEnv('MONGO_URI'));
     } catch (error) {
+      // eslint-disable-next-line no-console
       console.error(error);
     }
   }

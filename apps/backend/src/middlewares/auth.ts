@@ -13,7 +13,7 @@ const requireAuth = handleAsync(async (req: Request, res: Response, next: NextFu
   const isLoggedOut = await Cache.get(`logged_out:${token}`);
   if (isLoggedOut) throw new AppError('Unauthorized', 401);
 
-  const decoded = await decodeToken(token) as JwtPayload;
+  const decoded = (await decodeToken(token)) as JwtPayload;
   if (!decoded) throw new AppError('Unauthorized', 401);
 
   const userId = decoded.id;

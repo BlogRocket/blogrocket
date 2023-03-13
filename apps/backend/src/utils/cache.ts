@@ -8,6 +8,7 @@ class CacheClient {
   constructor() {
     this.client = createClient({ url: getEnv('REDIS_URI') });
     this.client.on('error', (err) => {
+      // eslint-disable-next-line no-console
       console.log('Redis Client Error', err);
     });
   }

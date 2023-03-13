@@ -8,7 +8,7 @@ describe('Middleware', () => {
     });
 
     it('should pass', async () => {
-      assert(true)
+      assert(true);
     });
   });
 });

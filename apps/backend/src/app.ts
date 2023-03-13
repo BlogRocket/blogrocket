@@ -7,12 +7,11 @@ import router from './routes';
 import errorMiddleware from './middlewares/error';
 import Db from './utils/db';
 import Cache from './utils/cache';
-import { getEnv } from './utils/config';
 
 dotenv.config();
 
-const PORT = parseInt(getEnv('PORT')!) || 5001;
-const HOST = getEnv('HOST') || 'localhost';
+Db.connect();
+Cache.connect();
 
 const app = express();
 
@@ -29,19 +28,12 @@ app.get('/', (req, res, next) => {
   if (fs.existsSync(publicPath)) {
     return express.static(path.join(__dirname, 'public'))(req, res, next);
   }
-  return res.send("Hello World!");
+  return res.send('Hello World!');
 });
 
 app.use('/api/v0', router);
 
 // Error handler
 app.use(errorMiddleware);
-
-Db.connect();
-Cache.connect();
-
-app.listen(PORT, HOST, () => {
-  console.log(`Server is running on http://${HOST}:${PORT}`);
-});
 
 export default app;

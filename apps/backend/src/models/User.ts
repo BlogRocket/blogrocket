@@ -11,15 +11,17 @@ interface InstanceMethods {
   comparePassword: (password: string) => Promise<boolean>;
 }
 
-export interface IUserModel extends Model<IUser, {}, InstanceMethods> {
-  // Add your static methods here
-}
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export type IUserModel = Model<IUser, {}, InstanceMethods>;
 
-const UserSchema = new Schema<IUser, IUserModel, InstanceMethods>({
-  email: { type: String, required: true, unique: true },
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true, select: false },
-}, { timestamps: true });
+const UserSchema = new Schema<IUser, IUserModel, InstanceMethods>(
+  {
+    email: { type: String, required: true, unique: true },
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true, select: false }
+  },
+  { timestamps: true }
+);
 
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

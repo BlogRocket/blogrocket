@@ -6,7 +6,6 @@ import { generateToken } from '../utils/jwt';
 
 /** Handles all authentication related requests */
 export class AuthController {
-
   /** Sends a verification email to the user */
   static verifyMail = handleAsync(async (req, res) => {
     const { email } = req.body;
@@ -36,7 +35,7 @@ export class AuthController {
     const token = generateToken({ id: user._id, email: user.email });
     await Cache.del(`verify:${code}`);
 
-    res.status(201).send({ 
+    res.status(201).send({
       status: 'success',
       user: { id: user._id, email: user.email, username: user.username },
       token
@@ -49,7 +48,7 @@ export class AuthController {
 
     if (!email) throw new AppError('Email is required');
     if (!password) throw new AppError('Password is required');
-    
+
     const user = await User.findOne({ email }).select('+password');
     if (!user) throw new AppError('Invalid email or password', 404);
 
