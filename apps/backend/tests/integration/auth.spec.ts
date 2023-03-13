@@ -3,7 +3,7 @@ import request from "supertest";
 import app from "../../app";
 import User from "../../models/User";
 
-const baseUrl = '/app/v0';
+const baseUrl = '/api/v0';
 
 describe('Auth', () => {
   let user, code, token;

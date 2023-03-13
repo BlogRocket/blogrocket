@@ -3,8 +3,7 @@ import path from 'path';
 import * as fs from 'fs';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import appRoute from './routes/app';
-import apiRoute from './routes/api';
+import router from './routes';
 import errorMiddleware from './middlewares/error';
 import Db from './utils/db';
 import Cache from './utils/cache';
@@ -33,8 +32,7 @@ app.get('/', (req, res, next) => {
   return res.send("Hello World!");
 });
 
-app.use('/app/v0', appRoute);
-app.use('/app/v0', apiRoute);
+app.use('/api/v0', router);
 
 // Error handler
 app.use(errorMiddleware);
