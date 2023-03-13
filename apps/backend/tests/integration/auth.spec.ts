@@ -113,4 +113,18 @@ describe('Auth', () => {
       assert.equal(res.body.user.email, credentials.email);
     });
   });
+
+  describe('POST /logout', () => {
+    it('should logout', async () => {
+      const res = await request(app).delete(`${baseUrl}/logout`).set('Authorization', `Bearer ${token}`);
+      assert.equal(res.status, 200);
+    });
+
+    it('should return 401 if user is not logged in', async () => {
+      const res = await request(app).get(`${baseUrl}/me`).set('Authorization', `Bearer ${token}`);
+      assert.equal(res.status, 401);
+      assert.equal(res.body.status, 'error');
+      assert.exists(res.body.message);
+    });
+  });
 })
