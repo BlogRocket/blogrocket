@@ -104,5 +104,13 @@ describe('Auth', () => {
       assert.equal(res.body.user.email, credentials.email);
       token = res.body.token;
     });
+
+    it('should return user profile', async () => {
+      const res = await request(app).get(`${baseUrl}/me`).set('Authorization', `Bearer ${token}`);
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'success');
+      assert.exists(res.body.user);
+      assert.equal(res.body.user.email, credentials.email);
+    });
   });
 })

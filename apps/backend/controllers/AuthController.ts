@@ -35,7 +35,6 @@ export class AuthController {
 
     const token = generateToken({ id: user._id, email: user.email });
     await Cache.del(`verify:${code}`);
-    await Cache.set(`auth:${token}`, user._id.toString(), 60 * 60 * 24);
 
     res.status(201).send({ 
       status: 'success',
@@ -67,6 +66,8 @@ export class AuthController {
 
   /** Logs out a user */
   static logout = handleAsync(async (req, res) => {
+    const { token, user } = req;
+    await Cache.set(`logged_out:${token}`, user.email, 60 * 60 * 24);
     res.send('Logged out');
   });
 }
