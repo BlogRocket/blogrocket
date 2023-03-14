@@ -4,9 +4,9 @@ import * as fs from 'fs';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes';
-import errorMiddleware from './middlewares/error';
-import Db from './utils/db';
-import Cache from './utils/cache';
+import errorMiddleware from './errors/handler';
+import Db from './services/db';
+import Cache from './services/cache';
 
 dotenv.config();
 
