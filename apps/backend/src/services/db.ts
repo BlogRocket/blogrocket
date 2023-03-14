@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { getEnv } from './config';
+import { getEnv } from '../utils/config';
 
 export default class Db {
   static async connect() {
