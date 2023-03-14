@@ -1,6 +1,7 @@
 import express from 'express';
 import path from 'path';
 import * as fs from 'fs';
+import helmet from 'helmet';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import router from './routes';
@@ -15,6 +16,7 @@ Cache.connect();
 
 const app = express();
 
+app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
