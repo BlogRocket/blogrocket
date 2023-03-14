@@ -6,7 +6,7 @@ import User from '../../models/User';
 const baseUrl = '/api/v0';
 
 describe('Auth', () => {
-  let code, token;
+  let code, token, refresh;
   const credentials = {
     email: 'bob@dylan.com',
     password: 'toto1234!'
@@ -63,9 +63,11 @@ describe('Auth', () => {
         .send({ ...credentials, code });
       assert.equal(res.status, 201);
       assert.equal(res.body.status, 'success');
-      assert.exists(res.body.token);
+      assert.exists(res.body.access);
+      assert.exists(res.body.refresh);
       assert.exists(res.body.user);
-      token = res.body.token;
+      token = res.body.access;
+      refresh = res.body.refresh;
     });
   });
 
@@ -106,10 +108,12 @@ describe('Auth', () => {
       const res = await request(app).post(`${baseUrl}/login`).send(credentials);
       assert.equal(res.status, 200);
       assert.equal(res.body.status, 'success');
-      assert.exists(res.body.token);
+      assert.exists(res.body.access);
+      assert.exists(res.body.refresh);
       assert.exists(res.body.user);
       assert.equal(res.body.user.email, credentials.email);
-      token = res.body.token;
+      token = res.body.access;
+      refresh = res.body.refresh;
     });
 
     it('should return user profile', async () => {
@@ -121,17 +125,50 @@ describe('Auth', () => {
     });
   });
 
-  describe('POST /logout', () => {
+  describe('POST /refresh', () => {
+    it('should refresh', async () => {
+      const res = await request(app).post(`${baseUrl}/refresh`).send({ refresh });
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'success');
+      assert.exists(res.body.access);
+      assert.exists(res.body.refresh);
+      token = res.body.access;
+      refresh = res.body.refresh;
+    });
+
+    it('should return user profile', async () => {
+      const res = await request(app).get(`${baseUrl}/me`).set('Authorization', `Bearer ${token}`);
+      assert.equal(res.status, 200);
+      assert.equal(res.body.status, 'success');
+      assert.exists(res.body.user);
+      assert.equal(res.body.user.email, credentials.email);
+    });
+
+    it('should not accept access as refresh', async () => {
+      const res = await request(app).post(`${baseUrl}/refresh`).send({ refresh: token });
+      assert.equal(res.status, 401);
+      assert.equal(res.body.status, 'error');
+      assert.exists(res.body.message);
+    });
+
+    it('should not accept invalid refresh', async () => {
+      const res = await request(app).post(`${baseUrl}/refresh`).send({ refresh: 'invalid' });
+      assert.equal(res.status, 401);
+      assert.equal(res.body.status, 'error');
+      assert.exists(res.body.message);
+    });
+  })
+
+  describe('DELETE /logout', () => {
     it('should logout', async () => {
       const res = await request(app).delete(`${baseUrl}/logout`).set('Authorization', `Bearer ${token}`);
       assert.equal(res.status, 200);
     });
 
-    it('should return 401 if user is not logged in', async () => {
-      const res = await request(app).get(`${baseUrl}/me`).set('Authorization', `Bearer ${token}`);
+    it('should not be able to refresh', async () => {
+      const res = await request(app).post(`${baseUrl}/refresh`).send({ refresh });
       assert.equal(res.status, 401);
       assert.equal(res.body.status, 'error');
-      assert.exists(res.body.message);
-    });
+    })
   });
 });
