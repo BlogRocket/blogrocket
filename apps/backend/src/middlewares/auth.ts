@@ -1,31 +1,67 @@
 import { NextFunction, Request, Response } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
-import User, { IUser } from '../models/User';
-import AppError from '../utils/appError';
-import Cache from '../utils/cache';
+import AppError from '../errors/appError';
 import handleAsync from '../utils/handleAsync';
-import { decodeToken } from '../utils/jwt';
+import JwtService from '../services/jwt';
+import Cache from '../services/cache';
 
-const requireAuth = handleAsync(async (req: Request, res: Response, next: NextFunction) => {
-  const token = req.headers.authorization?.split(' ')[1];
-  if (!token) throw new AppError('Unauthorized', 401);
+export const requireAccess = handleAsync(async (req: Request, _res: Response, next: NextFunction) => {
+  const [bearer, token] = req.get('Authorization')?.split(' ');
+  if (bearer !== 'Bearer' || !token) throw new AppError('Unauthorized', 401);
 
-  const isLoggedOut = await Cache.get(`logged_out:${token}`);
-  if (isLoggedOut) throw new AppError('Unauthorized', 401);
+  try {
+    const decoded = JwtService.decode(token)
 
-  const decoded = (await decodeToken(token)) as JwtPayload;
-  if (!decoded) throw new AppError('Unauthorized', 401);
+    if (!JwtService.isAccess(decoded)) {
+      next(new AppError("Invalid access", 401))
+    }
 
-  const userId = decoded.id;
-  const user = await User.findById(userId);
-  if (!user) {
-    await Cache.del(`auth:${token}`);
-    throw new AppError('Unauthorized', 401);
+    const userId = decoded.userId;
+
+    req.user = { id: userId, email: decoded.sub }
+    next();
+  } catch (err) {
+    throw new AppError('Invalid access', 401);
   }
-
-  req.token = token;
-  req.user = user as IUser;
-  next();
 });
 
-export default requireAuth;
+export const requireAccess2 = handleAsync(async (req: Request, _res: Response, next: NextFunction) => {
+  const [bearer, token] = req.get('Authorization')?.split(' ');
+  if (bearer !== 'Bearer' || !token) throw new AppError('Unauthorized', 401);
+
+  try {
+    const decoded = JwtService.decode(token)
+
+    if (!JwtService.isAccess(decoded)) {
+      next(new AppError("Invalid access", 401))
+    }
+
+    const userId = decoded.userId;
+
+    req.user = { id: userId, email: decoded.sub }
+    req.body.refresh = decoded.jti
+    next();
+  } catch (err) {
+    throw new AppError('Invalid access', 401);
+  }
+});
+
+export const requireRefresh = handleAsync(async (req: Request, _res: Response, next: NextFunction) => {
+  if (!req.body.refresh) throw new AppError('Unauthorized', 401);
+
+  const token = req.body.refresh;
+  try {
+    const decoded = JwtService.decode(token);
+
+    if (!JwtService.isRefresh(decoded)) {
+      next(new AppError("Invalid refresh", 401))
+    }
+
+    const value = await Cache.get(`non_refresh_${token}`);
+    if (value) next(new AppError("Refresh already used", 401))
+
+    req.user = { id: decoded.userId, email: decoded.sub }
+    next();
+  } catch (err) {
+    throw new AppError('Invalid refresh', 401);
+  }
+});

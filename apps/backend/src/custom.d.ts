@@ -4,7 +4,10 @@ declare global {
   namespace Express {
     export interface Request {
       token: string;
-      user: IUser
+      user: {
+        id: string;
+        email: string;
+      }
     }
   }
 }
