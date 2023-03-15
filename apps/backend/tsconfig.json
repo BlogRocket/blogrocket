@@ -2,15 +2,17 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "rootDir": "./",
+    "rootDir": ".",
     "outDir": "./dist",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
   "ts-node": {
     "esm": true,
-    "require": ["tsconfig-paths/register"]
+    "files": true,
+    "require": ["tsconfig-paths/register"],
   },
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
