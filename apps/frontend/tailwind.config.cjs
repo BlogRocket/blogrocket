@@ -28,7 +28,8 @@ module.exports = {
         light: '#646cff',
         DEFAULT: '#646cff',
         dark: '#646cff',
-      }
+      },
+      secondary: '#06b6d4'
     }
   },
   plugins: [],

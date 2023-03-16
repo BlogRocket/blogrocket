@@ -21,7 +21,7 @@ export default function Register() {
               </h1>
               <div className="max-w-sm mx-auto mt-8 flex flex-col gap-8">
                 <Input type="email" placeholder="rocker@mail.com" label="Email" />
-                <Input type="password" placeholder="********" label="Password" />
+                <Input type="password" placeholder="••••••••" label="Password" />
                 <div className="flex justify-center mt-8">
                   <Button variant="solid" className="w-full">Let's go</Button>
                 </div>

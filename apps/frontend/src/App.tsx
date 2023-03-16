@@ -6,6 +6,7 @@ import Root from "@/routes/Root"
 import Dashboard from "@/routes/Dashboard"
 import ManageAccess from "@/routes/ManageAccess"
 import Posts from "@/routes/Posts"
+import "./App.css"
 
 const router = createBrowserRouter([
   {
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <main className="min-h-screen bg-gradient-to-r from-primary/[0.02] via-transparent to-primary/[0.01]">
+    <main className="min-h-screen bg-gradient-to-r from-primary/[0.02] via-transparent to-secondary/[0.03]">
       <RouterProvider router={router} />
     </main>
   )
