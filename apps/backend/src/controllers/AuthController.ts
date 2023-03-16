@@ -72,7 +72,7 @@ export class AuthController {
   /** Refreshes a user's access token */
   static refresh = handleAsync(async (req, res) => {
     const { user, body: { refresh: token } } = req;
-    const { access, refresh } = JwtService.generate(user.id, user.email);
+    const { access, refresh } = JwtService.generate(user._id, user.email);
     await Cache.set(`non_refresh_${token}`, "1", parseInt(getEnv('JWT_REFRESH_EXPIRES_IN'), 10));
     res.status(200).send({
       status: 'success',
