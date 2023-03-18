@@ -20,14 +20,24 @@ module.exports = {
       transparent: "transparent",
       current: "currentColor",
       black: "#213547",
-      neutral: colors.zinc,
+      neutral: {
+        ...colors.zinc,
+        DEFAULT: colors.zinc[500],
+      },
       white: "#fff",
       primary: {
         light: '#646cff',
         DEFAULT: '#646cff',
         dark: '#646cff',
       },
-      secondary: '#06b6d4'
+      secondary: {
+        ...colors.cyan,
+        DEFAULT: colors.cyan[500],
+      },
+      danger: {
+        ...colors.rose,
+        DEFAULT: colors.rose[500],
+      }
     }
   },
   plugins: [],

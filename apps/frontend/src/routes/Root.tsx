@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom"
 
 const LINKS = [
   { to: "", label: "Dashboard" },
-  { to: "posts", label: "Posts" },
   { to: "access", label: "Manage access" },
 ]
 
@@ -18,7 +17,7 @@ export default function Root() {
         <aside className="hidden lg:block fixed z-20 inset-0 top-0 left-0 right-auto w-[19.5rem]">
           <Sidebar />
         </aside>
-        <div className="lg:ml-[19.5rem]">
+        <div className="max-w-4xl lg:ml-[19.5rem]">
           <Outlet></Outlet>
         </div>
       </div>

@@ -30,10 +30,6 @@ const router = createBrowserRouter([
         element: <Dashboard />
       },
       {
-        path: "posts",
-        element: <Posts />
-      },
-      {
         path: "access",
         element: <ManageAccess />
       }
