@@ -6,7 +6,7 @@ import JwtService from '../services/jwt';
 import { getEnv } from '../utils/config';
 
 /** Handles all authentication related requests */
-export class AuthController {
+export default class AuthController {
   /** Sends a verification email to the user */
   static verifyMail = handleAsync(async (req, res) => {
     const { email } = req.body;
