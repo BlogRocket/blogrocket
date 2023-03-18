@@ -19,10 +19,8 @@ module.exports = {
     colors: {
       transparent: "transparent",
       current: "currentColor",
-      black: {
-        ...colors.zinc,
-        DEFAULT: "#213547",
-      },
+      black: "#213547",
+      neutral: colors.zinc,
       white: "#fff",
       primary: {
         light: '#646cff',
