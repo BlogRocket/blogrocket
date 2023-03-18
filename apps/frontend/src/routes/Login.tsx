@@ -32,10 +32,10 @@ export default function Login() {
                   <Button type="submit" variant="solid" className="w-full">Let's go</Button>
                 </div>
                 <div className="flex justify-center">
-                  <NavLink to="/register" className="text-black-500">Register</NavLink>
+                  <NavLink to="/register" className="text-neutral-500">Register</NavLink>
                   {/* A vertical separator */}
                   <span className="mx-2">|</span>
-                  <NavLink to="/forgot-password" className="text-black-500">Forgot password</NavLink>
+                  <NavLink to="/forgot-password" className="text-neutral-500">Forgot password</NavLink>
                 </div>
               </div>
             </form>

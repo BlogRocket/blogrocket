@@ -26,10 +26,10 @@ export default function Register() {
                   <Button variant="solid" className="w-full">Let's go</Button>
                 </div>
                 <div className="flex justify-center">
-                  <NavLink to="/login" className="text-black-500">Login</NavLink>
+                  <NavLink to="/login" className="text-neutral-500">Login</NavLink>
                   {/* A vertical separator */}
                   <span className="mx-2">|</span>
-                  <NavLink to="/forgot-password" className="text-black-500">Forgot password</NavLink>
+                  <NavLink to="/forgot-password" className="text-neutral-500">Forgot password</NavLink>
                 </div>
               </div>
             </form>
