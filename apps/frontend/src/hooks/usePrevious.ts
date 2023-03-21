@@ -1,3 +1,7 @@
+/**
+ * Code from
+ * https://fastnguyen.medium.com/build-otp-input-with-reactjs-hooks-5699eb58b427
+ */
 import { useRef, useEffect } from 'react';
 
 function usePrevious<T>(value?: T) {

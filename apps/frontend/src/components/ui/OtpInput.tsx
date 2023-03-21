@@ -1,7 +1,10 @@
+/**
+ * Code from
+ * https://fastnguyen.medium.com/build-otp-input-with-reactjs-hooks-5699eb58b427
+ */
 import usePrevious from '@/hooks/usePrevious';
 import cn from 'clsx';
-import e from 'express';
-import React, { LegacyRef, memo, useCallback, useLayoutEffect, useRef, useState } from 'react';
+import React, { memo, useCallback, useLayoutEffect, useRef, useState } from 'react';
 
 export interface SingleOTPInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
