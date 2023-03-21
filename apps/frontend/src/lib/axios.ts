@@ -37,10 +37,10 @@ const interceptAxios = () => {
       return refreshAuth({ refresh: storage.getToken('refresh') })
         .then((response) => {
           console.log('response', response);
-          storage.setToken(response.access);
-          storage.setToken(response.refresh, 'refresh');
-          error.response.config.headers.Authorization = `Bearer ${response.access}`;
-          return axios(error.response.config);
+          storage.setToken(response.data.access);
+          storage.setToken(response.data.refresh, 'refresh');
+          error.response.config.headers.Authorization = `Bearer ${response.data.access}`;
+          return axios(error.response.config)
         })
         .catch((err) => {
           storage.clearToken();

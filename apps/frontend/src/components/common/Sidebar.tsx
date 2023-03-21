@@ -1,6 +1,7 @@
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import { RectangleGroupIcon, KeyIcon, ArrowRightOnRectangleIcon } from '@heroicons/react/24/outline'
 import cn from 'clsx';
+import { useLogout } from "@/lib/auth";
 
 const LINKS = [
   { path: "", label: "Dashboard", icon: RectangleGroupIcon },
@@ -8,6 +9,15 @@ const LINKS = [
 ]
 
 const Sidebar: React.FC = () => {
+  const logout = useLogout()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout.mutate(null, {
+      onSuccess: () => navigate("/login")
+    });
+  }
+  
   return (
     <aside className="h-full flex flex-col pb-10 px-8 overflow-y-auto bg-neutral-900">
       <div className="mt-8">
@@ -38,7 +48,7 @@ const Sidebar: React.FC = () => {
         ))}
       </div>
       <div className="mt-auto">
-        <div className="font-medium text-base flex items-center gap-2 hover:bg-neutral-800/40 rounded-md px-4 py-2 text-neutral-500 hover:text-neutral-100 cursor-pointer">
+        <div className="font-medium text-base flex items-center gap-2 hover:bg-neutral-800/40 rounded-md px-4 py-2 text-neutral-500 hover:text-neutral-100 cursor-pointer" onClick={handleLogout}>
           <ArrowRightOnRectangleIcon className="w-5 h-5" />
           <span>Log out</span>
         </div>

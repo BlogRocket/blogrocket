@@ -6,7 +6,8 @@ const getKey = (type: TokenType) => `${prefix}-${type}_token`;
 
 const storage = {
   getToken: (type: TokenType = 'access') => {
-    return JSON.parse(window.localStorage.getItem(getKey(type)) || 'null');
+    const token = window.localStorage.getItem(getKey(type));
+    return token ? JSON.parse(token) : null;
   },
   setToken: (token: string, type: TokenType = 'access') => {
     window.localStorage.setItem(getKey(type), JSON.stringify(token));

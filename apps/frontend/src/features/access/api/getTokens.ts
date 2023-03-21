@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Token } from "../types";
 
 export const getTokens = async (): Promise<Token[]> => {
-  return axios.get("/token");
+  const request = await axios.get("/token") as { tokens: Token[] };
+  return request.tokens;
 }
 
 type QueryFnType = typeof getTokens;

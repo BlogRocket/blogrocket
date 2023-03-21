@@ -1,17 +1,31 @@
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
+import useForm from "@/hooks/useForm";
 import { Dialog } from "@headlessui/react"
+import { CreateTokenDTO, useCreateToken } from "../api/createToken";
 
 type NewTokenProps = {
   onFinally: () => void;
 }
 
 export const NewToken: React.FC<NewTokenProps> = ({ onFinally }) => {
+  const { values, onChange } = useForm<CreateTokenDTO>({
+    name: '',
+    expires: '3000',
+  });
+  const createTokenMutation = useCreateToken();
+
+  const handleSubmit = async () => {
+    await createTokenMutation.mutateAsync(values);
+    onFinally();
+  }
+
   return (
     <>
       <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
         <div className="sm:flex sm:items-start">
           <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+            {/* @ts-ignore */}
             <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
               New Token
             </Dialog.Title>
@@ -20,8 +34,12 @@ export const NewToken: React.FC<NewTokenProps> = ({ onFinally }) => {
                 Access token are like ordinary OAuth access tokens. They can be used to make API requests on behalf of a user.
               </p>
               <div className="mt-4">
-                <Input label="Name" />
+                <Input label="Name" name="name" onChange={onChange} />
                 <small>What is this token for?</small>
+              </div>
+              <div className="mt-4">
+                <Input label="Expires" name="expires" value={values.expires} onChange={onChange} />
+                <small>How long should this token be valid?</small>
               </div>
             </div>
           </div>
@@ -31,7 +49,8 @@ export const NewToken: React.FC<NewTokenProps> = ({ onFinally }) => {
         <Button
           type="button"
           className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-          onClick={onFinally}
+          onClick={handleSubmit}
+          loading={createTokenMutation.isLoading}
         >
           Generate
         </Button>

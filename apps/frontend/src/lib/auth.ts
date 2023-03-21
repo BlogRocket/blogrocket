@@ -31,7 +31,6 @@ const logoutFn = async () => {
   await logout();
   storage.clearToken('access');
   storage.clearToken('refresh');
-  window.location.assign(window.location.origin as unknown as string); // TODO: fix this
 }
 
 const config = {

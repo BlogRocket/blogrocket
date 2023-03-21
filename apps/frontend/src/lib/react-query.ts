@@ -1,4 +1,5 @@
-import { DefaultOptions, QueryClient, UseQueryOptions } from "@tanstack/react-query";
+import { DefaultOptions, QueryClient, UseMutationOptions, UseQueryOptions } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 const defaultOptions: DefaultOptions = {
   queries: {
@@ -19,4 +20,10 @@ export type ExtractFnReturnType<FnType extends (...args: any) => any> = PromiseV
 export type QueryConfig<QueryFnType extends (...args: any) => any> = Omit<
   UseQueryOptions<ExtractFnReturnType<QueryFnType>>,
   'queryKey' | 'queryFn'
+>;
+
+export type MutationConfig<MutationFnType extends (...args: any) => any> = UseMutationOptions<
+  ExtractFnReturnType<MutationFnType>,
+  AxiosError,
+  Parameters<MutationFnType>[0]
 >;

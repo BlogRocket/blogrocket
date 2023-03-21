@@ -3,8 +3,8 @@ export interface Token {
   name: string;
   token: string;
   userId: string;
-  expires: Date;
-  lastUsed?: Date;
+  expires: string;
+  lastUsed?: string;
   lastIp?: string;
-  createdAt: Date;
+  createdAt: string;
 }
