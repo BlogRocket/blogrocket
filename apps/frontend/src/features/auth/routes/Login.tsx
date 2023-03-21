@@ -1,18 +1,21 @@
 import Navbar from "@/components/common/Navbar";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { useState } from "react";
+import useForm from "@/hooks/useForm";
+import { useLogin } from "@/lib/auth";
 import { NavLink, useNavigate } from "react-router-dom";
+import { LoginCredentialsDTO } from "../api/login";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { values, onChange } = useForm<LoginCredentialsDTO>();
   const navigate = useNavigate();
+  const login = useLogin();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Not yet implemented.");
-    navigate("/app");
+    login.mutate(values, {
+      onSuccess: () => navigate("/app")
+    });
   };
 
   return (
@@ -26,10 +29,10 @@ export default function Login() {
                 Login.
               </h1>
               <div className="max-w-sm mx-auto mt-8 flex flex-col gap-8">
-                <Input type="email" placeholder="rocker@mail.com" label="Email" value={email} onChange={setEmail} />
-                <Input type="password" placeholder="••••••••" label="Password" value={password} onChange={setPassword} />
+                <Input type="email" placeholder="rocker@mail.com" label="Email" name="email" onChange={onChange} />
+                <Input type="password" placeholder="••••••••" label="Password" name="password" onChange={onChange} />
                 <div className="flex justify-center mt-8">
-                  <Button type="submit" variant="solid" className="w-full">Let's go</Button>
+                  <Button type="submit" variant="solid" className="w-full" loading={login.isLoading}>Let's go</Button>
                 </div>
                 <div className="flex justify-center">
                   <NavLink to="/register" className="text-neutral-500">Register</NavLink>

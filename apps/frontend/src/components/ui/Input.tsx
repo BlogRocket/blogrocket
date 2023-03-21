@@ -1,14 +1,15 @@
 
-type InputProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> & {
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   label: string;
-  onChange?: (val: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+  onTextChange?: (val: string, e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: React.FC<InputProps> = ({ label, onChange, ...props }) => {
+const Input: React.FC<InputProps> = ({ label, onTextChange, onChange, ...props }) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    onChange?.(value, e);
+    onTextChange?.(value, e);
+    onChange?.(e);
   }
 
   return (

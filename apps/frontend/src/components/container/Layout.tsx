@@ -1,13 +1,13 @@
 import Navbar from "@/components/common/Navbar"
 import Sidebar from "@/components/common/Sidebar"
-import { Outlet } from "react-router-dom"
+import React, { PropsWithChildren } from "react"
 
 const LINKS = [
   { to: "", label: "Dashboard" },
   { to: "access", label: "Manage access" },
 ]
 
-export default function Root() {
+export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <main>
       <div className="lg:hidden">
@@ -18,7 +18,7 @@ export default function Root() {
           <Sidebar />
         </aside>
         <div className="max-w-4xl lg:ml-[19.5rem]">
-          <Outlet></Outlet>
+          {children}
         </div>
       </div>
     </main>

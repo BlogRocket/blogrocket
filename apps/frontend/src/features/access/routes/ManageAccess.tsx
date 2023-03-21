@@ -4,34 +4,20 @@ import { Dialog } from '@headlessui/react'
 import Input from '@/components/ui/Input'
 import Button from "@/components/ui/Button";
 import cn from 'clsx';
+import { useTokens } from "../api/getTokens";
+import { Token } from "../types";
+import { NewToken } from "../components/NewToken";
 
-const TOKENS = [
-  {
-    id: 1,
-    name: 'Alx',
-    created: '2021-01-01',
-    lastUsed: '2021-01-01',
-    lastIp: '',
-    lastUserAgent: '',
-  },
-  {
-    id: 1,
-    name: 'AltSchool',
-    created: '2021-01-01',
-    lastUsed: '2021-01-01',
-    lastIp: '',
-    lastUserAgent: '',
-  },
-]
 
 type Modals = {
   generate: undefined;
-  revoke: typeof TOKENS[0];
+  revoke: Token;
 }
 
-export default function ManageAccess() {
+export function ManageAccess() {
   const [modal, setModal] = useState<{ name: keyof Modals; data: Modals[keyof Modals] } | null>(null)
   const cancelButtonRef = useRef(null);
+  const { data } = useTokens();
 
   const closeModal = () => setModal(null)
   const openModal = (modal: keyof Modals, data?: Modals[keyof Modals]) => setModal({ name: modal, data })
@@ -45,7 +31,7 @@ export default function ManageAccess() {
         <div className="flex flex-row-reverse">
           <button className="ml-auto" onClick={() => openModal('generate')}>Generate token</button>
         </div>
-        {TOKENS.length > 0 ? (
+        {data && data.length > 0 ? (
           <table className="w-full mt-10">
             <thead>
               <tr>
@@ -53,22 +39,20 @@ export default function ManageAccess() {
                 <th className="text-left">Expires</th>
                 <th className="text-left">Last used</th>
                 <th className="text-left">Last IP</th>
-                <th className="text-left">Last user agent</th>
                 <th className="text-left"></th>
               </tr>
             </thead>
             <tbody className="mt-4">
-              {TOKENS.map((token, index) => {
+              {data.map((token, index) => {
                 const className = cn({
-                  'border-b border-neutral-100': index !== TOKENS.length - 1,
+                  'border-b border-neutral-100': index !== data.length - 1,
                 })
                 return (
-                <tr key={token.id} className={className}>
+                <tr key={token._id} className={className}>
                   <td>{token.name}</td>
-                  <td>{token.created}</td>
-                  <td>{token.lastUsed}</td>
+                  <td>{token.createdAt.toISOString()}</td>
+                  <td>{token.lastUsed?.toDateString()}</td>
                   <td>{token.lastIp}</td>
-                  <td>{token.lastUserAgent}</td>
                   <td>
                     <Button className="bg-transparent hover:bg-neutral-50 hover:border-transparent py-2 text-danger hover:text-danger" onClick={() => openModal('revoke', token)}>Revoke</Button>
                   </td>
@@ -81,7 +65,7 @@ export default function ManageAccess() {
             <h3 className="text-2xl font-bold">You have no tokens yet</h3>
             <p className="mt-4 text-neutral-500">Create your first token by clicking the button below</p>
             <div className="mt-8">
-              <button className="bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-md">
+              <button className="bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-md" onClick={() => openModal('generate')}>
                 Generate token
               </button>
             </div>
@@ -89,41 +73,7 @@ export default function ManageAccess() {
         )}
       </section>
       <Modal open={modal?.name === 'generate'} onClose={closeModal}>
-        <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-          <div className="sm:flex sm:items-start">
-            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-              <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
-                New Token
-              </Dialog.Title>
-              <div className="mt-2">
-                <p className="text-sm text-gray-500">
-                  Access token are like ordinary OAuth access tokens. They can be used to make API requests on behalf of a user.
-                </p>
-                <div className="mt-4">
-                  <Input label="Name" />
-                  <small>What is this token for?</small>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-          <Button
-            type="button"
-            className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-            onClick={closeModal}
-          >
-            Generate
-          </Button>
-          <button
-            type="button"
-            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-            onClick={closeModal}
-            ref={cancelButtonRef}
-          >
-            Cancel
-          </button>
-        </div>
+        <NewToken onFinally={closeModal} />
       </Modal>
       <Modal open={modal?.name === 'revoke'} onClose={closeModal}>
         <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">

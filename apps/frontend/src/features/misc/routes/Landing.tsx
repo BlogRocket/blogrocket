@@ -7,7 +7,7 @@ const LINKS = [
   { to: "register", label: "Get started" },
 ]
 
-export default function LandingPage() {
+export function Landing() {
   return (
     <main>
       <Navbar links={LINKS} />

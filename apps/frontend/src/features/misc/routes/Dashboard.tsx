@@ -1,10 +1,15 @@
+import { useUser } from "@/lib/auth";
 
 const POSTS = [];
 
-export default function Dashboard() {
+export function Dashboard() {
+  const user = useUser();
+
+  const username = user?.data?.username || user?.data?.email?.split("@")[0] || 'There'
+
   return (
     <div className="py-10">
-      <h3>Hi<br /><span className="font-bold text-3xl">Teema 👋🏽</span></h3>
+      <h3>Hi<br /><span className="font-bold text-3xl">{username} 👋🏽</span></h3>
       {POSTS.length > 0 ? (
         <div />
       ) : (

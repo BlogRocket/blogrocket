@@ -1,12 +1,18 @@
 import Navbar from "@/components/common/Navbar";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
-import { NavLink } from "react-router-dom";
+import useForm from "@/hooks/useForm";
+import { NavLink, useNavigate } from "react-router-dom";
+import { RegisterCredentialsDTO } from "../api/register";
 
 export default function Register() {
+  const { values, onChange } = useForm<RegisterCredentialsDTO>();
+  const navigate = useNavigate();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Not yet implemented.");
+    console.log(values);
+    navigate('/verify', { state: values });
   };
 
   return (
@@ -20,10 +26,10 @@ export default function Register() {
                 Register.
               </h1>
               <div className="max-w-sm mx-auto mt-8 flex flex-col gap-8">
-                <Input type="email" placeholder="rocker@mail.com" label="Email" />
-                <Input type="password" placeholder="••••••••" label="Password" />
+                <Input type="email" placeholder="rocker@mail.com" label="Email" name="email" onChange={onChange} />
+                <Input type="password" placeholder="••••••••" label="Password" name="password" onChange={onChange} />
                 <div className="flex justify-center mt-8">
-                  <Button variant="solid" className="w-full">Let's go</Button>
+                  <Button variant="solid" className="w-full" type="submit">Let's go</Button>
                 </div>
                 <div className="flex justify-center">
                   <NavLink to="/login" className="text-neutral-500">Login</NavLink>
