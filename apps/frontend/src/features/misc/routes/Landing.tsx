@@ -7,7 +7,7 @@ const LINKS = [
   { to: "register", label: "Get started" },
 ]
 
-export default function LandingPage() {
+export function Landing() {
   return (
     <main>
       <Navbar links={LINKS} />
@@ -17,7 +17,7 @@ export default function LandingPage() {
             <h1 className="text-5xl font-bold mx-auto text-center max-w-2xl">
               Build your blog even faster.
             </h1>
-            <p className="text-lg text-black-500 mx-auto text-center max-w-2xl mt-4">
+            <p className="text-lg text-neutral-500 mx-auto text-center max-w-2xl mt-4">
               You have other magic to create but you need to add a blog to your website first. We know you can do it yourself but you don't want to spend the time. You want to get back to the magic.
             </p>
             <div className="flex justify-center mt-8">

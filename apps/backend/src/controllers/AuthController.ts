@@ -6,7 +6,7 @@ import JwtService from '../services/jwt';
 import { getEnv } from '../utils/config';
 
 /** Handles all authentication related requests */
-export class AuthController {
+export default class AuthController {
   /** Sends a verification email to the user */
   static verifyMail = handleAsync(async (req, res) => {
     const { email } = req.body;
@@ -72,7 +72,7 @@ export class AuthController {
   /** Refreshes a user's access token */
   static refresh = handleAsync(async (req, res) => {
     const { user, body: { refresh: token } } = req;
-    const { access, refresh } = JwtService.generate(user._id, user.email);
+    const { access, refresh } = JwtService.generate(user._id.toString(), user.email);
     await Cache.set(`non_refresh_${token}`, "1", parseInt(getEnv('JWT_REFRESH_EXPIRES_IN'), 10));
     res.status(200).send({
       status: 'success',
