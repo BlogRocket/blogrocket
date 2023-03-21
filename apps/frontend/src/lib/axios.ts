@@ -35,12 +35,12 @@ const interceptAxios = () => {
       axios.interceptors.response.eject(interceptor);
 
       return refreshAuth({ refresh: storage.getToken('refresh') })
-        .then((response) => {
-          console.log('response', response);
+        .then(async (response) => {
           storage.setToken(response.data.access);
           storage.setToken(response.data.refresh, 'refresh');
           error.response.config.headers.Authorization = `Bearer ${response.data.access}`;
-          return axios(error.response.config)
+          const res = await axios.request(error.response.config);
+          return res.data;
         })
         .catch((err) => {
           storage.clearToken();
