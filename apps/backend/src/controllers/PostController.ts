@@ -18,7 +18,8 @@ export default class PostController {
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
-    const total = await Post.countDocuments({ userId: req.user._id });
+    const count = await Post.countDocuments({ userId: req.user._id });
+    const total = Math.ceil(count / limit);
     const posts = await Post.find({ userId: req.user._id }).skip(skip).limit(limit);
     res.status(200).json({
       status: 'success',

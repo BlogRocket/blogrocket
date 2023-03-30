@@ -4,6 +4,7 @@ import Cache from '../services/cache';
 import handleAsync from '../utils/handleAsync';
 import JwtService from '../services/jwt';
 import { getEnv } from '../utils/config';
+import MailService from '../services/mail';
 
 /** Handles all authentication related requests */
 export default class AuthController {
@@ -17,8 +18,8 @@ export default class AuthController {
 
     const code = Math.floor(Math.random() * 9000) + 1000;
     await Cache.set(`verify_${code}`, email, 60 * 60);
-    //TODO: mail to user and do not send code in response
-    res.status(200).send({ status: 'success', code });
+    MailService.sendVerifyToken(email, code.toString());
+    res.status(200).send({ status: 'success' });
   });
 
   /** Signs up a new user */

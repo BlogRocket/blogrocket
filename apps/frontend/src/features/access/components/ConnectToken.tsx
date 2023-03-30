@@ -4,11 +4,11 @@ import useForm from "@/hooks/useForm";
 import { Dialog } from "@headlessui/react"
 import { CreateTokenDTO, useCreateToken } from "../api/createToken";
 
-type NewTokenProps = {
+type ConnectTokenProps = {
   onFinally: () => void;
 }
 
-export const NewToken: React.FC<NewTokenProps> = ({ onFinally }) => {
+export const ConnectToken: React.FC<ConnectTokenProps> = ({ onFinally }) => {
   const { values, onChange } = useForm<CreateTokenDTO>({
     name: '',
     expires: '3000',
@@ -27,39 +27,32 @@ export const NewToken: React.FC<NewTokenProps> = ({ onFinally }) => {
           <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
             {/* @ts-ignore */}
             <Dialog.Title as="h3" className="text-xl font-semibold leading-6 text-gray-900">
-              New Token
+              Connect to application
             </Dialog.Title>
             <div className="mt-2">
-              <p className="text-sm text-gray-500">
-                Access token are like ordinary OAuth access tokens. They can be used to make API requests on behalf of a user.
+              <p className="text-gray-500">
+                You can create a token to connect to your application. Add the token to your application and you will be able to access your data.
               </p>
               <div className="mt-4">
-                <Input label="Name" name="name" onChange={onChange} />
-                <small>What is this token for?</small>
-              </div>
-              <div className="mt-4">
-                <Input label="Expires" name="expires" value={values.expires} onChange={onChange} />
-                <small>How long should this token be valid?</small>
+                <div className="bg-neutral-200 p-2 rounded-md">
+                  <code className="text-sm">
+                    curl<br />
+                    -X POST<br />
+                    -H "Authorization: Bearer {'<token>'}"
+                  </code>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-        <Button
-          type="button"
-          className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-          onClick={handleSubmit}
-          loading={createTokenMutation.isLoading}
-        >
-          Generate
-        </Button>
         <button
           type="button"
           className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
           onClick={onFinally}
         >
-          Cancel
+          Close
         </button>
       </div>
     </>

@@ -1,5 +1,8 @@
 import redis, { createClient } from 'redis';
 import { getEnv } from '../utils/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 /** Cache Client Class */
 class CacheClient {
