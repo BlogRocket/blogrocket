@@ -19,6 +19,8 @@ router.post('/token/:id', requireAccess, TokenController.regenerateToken);
 router.delete('/token/:id', requireAccess, TokenController.deleteToken);
 
 router.get('/post', requireAccessOrPAT, PostController.getAllPosts);
+router.get('/post/:id', requireAccessOrPAT, PostController.getPost);
+router.post('/post', requireAccess, PostController.createPost);
 
 router.get('/me', requireAccess, UserController.me);
 

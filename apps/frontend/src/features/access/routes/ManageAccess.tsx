@@ -1,24 +1,20 @@
 import Modal from "@/components/common/Modal";
-import { useRef, useState } from 'react'
-import { Dialog } from '@headlessui/react'
-import Input from '@/components/ui/Input'
-import Button from "@/components/ui/Button";
-import cn from 'clsx';
-import { useTokens } from "../api/getTokens";
+import { useState } from 'react'
 import { Token } from "../types";
-import { NewToken } from "../components/NewToken";
+import { ConnectToken } from "../components/ConnectToken";
 import { TokenList } from "../components/TokenList";
 import { RevokeToken } from "../components/RevokeToken";
+import { NavLink } from "react-router-dom";
+import Button from "@/components/ui/Button";
 
 
 type Modals = {
-  generate: undefined;
+  connect: undefined;
   revoke: Token;
 }
 
 export function ManageAccess() {
   const [modal, setModal] = useState<{ name: keyof Modals; data: Modals[keyof Modals] } | null>(null)
-  const cancelButtonRef = useRef(null);
 
   const closeModal = () => setModal(null)
   const openModal = (modal: keyof Modals, data?: Modals[keyof Modals]) => setModal({ name: modal, data })
@@ -29,18 +25,21 @@ export function ManageAccess() {
         <h4 className="text-xl font-bold">Manage Access</h4>
       </header>
       <section className="bg-white rounded-md p-4 border border-neutral-100">
-        <div className="flex flex-row-reverse">
-          <button className="ml-auto" onClick={() => openModal('generate')}>Generate token</button>
+        <div className="flex flex-row-reverse gap-4">
+          <button className="bg-black text-white" onClick={() => openModal('connect')}>Connect</button>
+          <NavLink to="new">
+            <button className="text-black hover:text-black">Generate token</button>
+          </NavLink>
         </div>
         <div className="mt-10">
-          <TokenList openModal={openModal} />
+          <TokenList revoke={(token) => openModal('revoke', token)} />
         </div>
       </section>
-      <Modal open={modal?.name === 'generate'} onClose={closeModal}>
-        <NewToken onFinally={closeModal} />
-      </Modal>
       <Modal open={modal?.name === 'revoke'} onClose={closeModal}>
         <RevokeToken onFinally={closeModal} token={modal?.data} />
+      </Modal>
+      <Modal open={modal?.name === 'connect'} onClose={closeModal}>
+        <ConnectToken onFinally={closeModal} />
       </Modal>
     </div>
   );

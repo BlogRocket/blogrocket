@@ -17,7 +17,7 @@ export const Layout: React.FC<PropsWithChildren> = ({ children }) => {
         <aside className="hidden lg:block fixed z-20 inset-0 top-0 left-0 right-auto w-[19.5rem]">
           <Sidebar />
         </aside>
-        <div className="max-w-4xl lg:ml-[19.5rem]">
+        <div className="max-w-4xl lg:ml-[19.5rem] relative">
           {children}
         </div>
       </div>

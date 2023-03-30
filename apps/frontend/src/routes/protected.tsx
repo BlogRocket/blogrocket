@@ -6,13 +6,14 @@ import { PropsWithChildren, Suspense } from "react"
 import { lazyImport } from "@/utils/lazyImport"
 
 const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard')
-const { ManageAccess } = lazyImport(() => import('@/features/access'), 'ManageAccess')
+const { ManageAccessRoutes } = lazyImport(() => import('@/features/access'), 'ManageAccessRoutes')
+const { PostRoutes } = lazyImport(() => import('@/features/post'), 'PostRoutes')
 
 
 const Protected: React.FC<PropsWithChildren> = ({ children }) => {
   const fallback = (
     <div className="h-full w-full flex items-center justify-center">
-      <Spinner />
+      <Spinner light />
     </div>
   )
 
@@ -29,8 +30,8 @@ const Protected: React.FC<PropsWithChildren> = ({ children }) => {
 
 const App = () => {
   const fallback = (
-    <div className="h-full w-full flex items-center justify-center">
-      <Spinner />
+    <div className="h-screen w-full flex items-center justify-center">
+      <Spinner light />
     </div>
   )
   return (
@@ -48,7 +49,8 @@ export const protectedRoutes = [
     element: <Protected><App /></Protected>,
     children: [
       { path: '', element: <Dashboard /> },
-      { path: 'access', element: <ManageAccess /> }
+      { path: 'access/*', element: <ManageAccessRoutes /> },
+      { path: 'post/*', element: <PostRoutes /> },
     ]
   }
 ]
