@@ -1,3 +1,4 @@
+import Spinner from "@/components/ui/Spinner"
 import { useParams } from "react-router-dom"
 import { usePost } from "../api"
 import { PostHeader } from "../components"
@@ -11,7 +12,11 @@ export const ShowPost: React.FC<ShowPostProps> = () => {
   const post = usePost(id)
 
   if (post.isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className="h-40 w-full flex items-center justify-center">
+        <Spinner light />
+      </div>
+    )
   }
 
   if (!post.isLoading && !post.data) {
@@ -26,10 +31,10 @@ export const ShowPost: React.FC<ShowPostProps> = () => {
     <div>
       <PostHeader />
       <div className="flex flex-col gap-4 mt-8 w-[600px] max-w-full">
-        <div className="w-full bg-transparent focus:border-neutral-200 py-2 px-4 focus:outline-none leading-10 text-2xl font-bold">
+        <div className="w-full bg-transparent focus:border-neutral-200 py-1 px-4 focus:outline-none leading-10 text-2xl font-bold">
           {post.data.title}
         </div>
-        <div className="w-full h-96 bg-transparent focus:outline-none rounded-md py-2 px-4" placeholder="Body">
+        <div className="w-full h-96 bg-transparent focus:outline-none rounded-md py-1 px-4" placeholder="Body">
           {post.data.body}
         </div>
       </div>

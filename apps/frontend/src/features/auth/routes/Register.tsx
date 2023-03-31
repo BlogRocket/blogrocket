@@ -2,6 +2,7 @@ import Navbar from "@/components/common/Navbar";
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import useForm from "@/hooks/useForm";
+import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { verifyEmail } from "../api";
 import { RegisterCredentialsDTO } from "../api/register";
@@ -9,15 +10,18 @@ import { RegisterCredentialsDTO } from "../api/register";
 export default function Register() {
   const { values, onChange } = useForm<RegisterCredentialsDTO>();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(values);
+      setLoading(true);
       await verifyEmail({ email: values.email });
+      setLoading(false);
       navigate('/verify', { state: values });
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   };
 
@@ -35,7 +39,7 @@ export default function Register() {
                 <Input type="email" placeholder="rocker@mail.com" label="Email" name="email" onChange={onChange} />
                 <Input type="password" placeholder="••••••••" label="Password" name="password" onChange={onChange} />
                 <div className="flex justify-center mt-8">
-                  <Button variant="solid" className="w-full" type="submit">Let's go</Button>
+                  <Button variant="solid" className="w-full" type="submit" loading={loading}>Let's go</Button>
                 </div>
                 <div className="flex justify-center">
                   <NavLink to="/login" className="text-neutral-500">Login</NavLink>

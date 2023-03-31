@@ -3,7 +3,7 @@ import storage from '@/utils/storage';
 import Axios from 'axios';
 
 export const axios = Axios.create({
-  baseURL: 'http://localhost:3000/api/v0',
+  baseURL: 'https://blogrocket-v0.onrender.com/api/v0',
 });
 
 axios.interceptors.request.use((config) => {
