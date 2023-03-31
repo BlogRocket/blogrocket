@@ -17,23 +17,16 @@ axios.interceptors.request.use((config) => {
 
 
 const interceptAxios = () => {
-  const interceptor = axios.interceptors.response.use((response) => {
-    return response.data
-  },
+  const interceptor = axios.interceptors.response.use(
+    (response) => response.data,
     (error) => {
       if (error.response.status !== 401) {
         return Promise.reject(error);
       }
 
-      /*
-       * When response code is 401, try to refresh the token.
-       * Eject the interceptor so it doesn't loop in case
-       * token refresh causes the 401 response.
-        
-       * Must be re-attached later on or the token refresh will only happen once
-       */
       axios.interceptors.response.eject(interceptor);
-
+      
+      console.log('Refreshing ...')
       return refreshAuth({ refresh: storage.getToken('refresh') })
         .then(async (response) => {
           storage.setToken(response.data.access);
@@ -45,6 +38,7 @@ const interceptAxios = () => {
         .catch((err) => {
           storage.clearToken();
           storage.clearToken('refresh');
+          window.location.reload();
           return Promise.reject(err);
         })
         .finally(interceptAxios); // re-attach the interceptor

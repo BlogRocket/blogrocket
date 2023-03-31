@@ -2,17 +2,23 @@ import Navbar from "@/components/common/Navbar";
 import Button from "@/components/ui/Button";
 import OTPInput from "@/components/ui/OtpInput";
 import useForm from "@/hooks/useForm";
-import { NavLink, useLocation } from "react-router-dom";
+import { useRegister } from "@/lib/auth";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 
 export default function Verify() {
   const { values, onTextChange } = useForm({ code: "" })
   const { state } = useLocation();
+  const navigate = useNavigate();
   const email = state?.email || "";
   const password = state?.password || "";
+  const register = useRegister();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Not yet implemented.");
+    console.log(values);
+    register.mutate({ email, password, code: values.code }, {
+      onSuccess: () => navigate("/app")
+    });
   };
 
   if (!email || !password) return (
@@ -55,13 +61,17 @@ export default function Verify() {
                 <p>We've sent a mail to <span className="underline">{email}</span>. Please click the link in the mail to verify your account.</p>
                 <OTPInput
                   length={4}
-                  onChange={(text) => onTextChange(text, 'code')}
+                  onChange={(text) => onTextChange(text, "code")}
                   inputClassName="bg-transparent border border-px"
                   className="self-center"
                 />
                 <div className="flex justify-center mt-8">
-                  <Button variant="solid" className="w-full">Let's go</Button>
+                  <Button variant="solid" className="w-full" type="submit" loading={register.isLoading}>Let's go</Button>
                 </div>
+              </div>
+              <div className="max-w-sm mx-auto mt-8">
+                {/* edit mail */}
+                <NavLink to="/register" className="text-neutral-500 text-base underline font-medium">Go back and edit mail</NavLink>
               </div>
             </form>
           </div>

@@ -3,16 +3,22 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import useForm from "@/hooks/useForm";
 import { NavLink, useNavigate } from "react-router-dom";
+import { verifyEmail } from "../api";
 import { RegisterCredentialsDTO } from "../api/register";
 
 export default function Register() {
   const { values, onChange } = useForm<RegisterCredentialsDTO>();
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(values);
-    navigate('/verify', { state: values });
+    try {
+      console.log(values);
+      await verifyEmail({ email: values.email });
+      navigate('/verify', { state: values });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
