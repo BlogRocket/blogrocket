@@ -11,7 +11,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const Button: React.FC<ButtonProps> = ({ children, variant='solid', loading, disabled, className, ...props }) => {
-  const Component = props.to ? NavLink : "button"
+  const Component: any = props.to ? NavLink : "button"
   const cls = cn(
     className,
     'px-4 py-2 rounded-md text-white font-medium relative',
