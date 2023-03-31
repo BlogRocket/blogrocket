@@ -15,7 +15,6 @@ export default function Verify() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(values);
     register.mutate({ email, password, code: values.code }, {
       onSuccess: () => navigate("/app")
     });

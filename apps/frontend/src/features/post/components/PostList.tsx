@@ -36,6 +36,11 @@ export const PostList: React.FC = () => {
 
   return (
     <div className="w-[600px] max-w-full">
+      <div className="mb-4">
+        <Button to='post/new' className="bg-primary hover:bg-primary-dark text-white font-medium py-2 px-4 rounded-md">
+          Create post
+        </Button>
+      </div>
       <header className="sticky top-0 py-4">
         <input type="text" autoComplete="off"
           placeholder="Search posts" className="w-full bg-white border border-neutral-300 focus:border-neutral-500 rounded-md py-2 px-4" />
